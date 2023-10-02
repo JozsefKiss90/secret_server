@@ -1,44 +1,30 @@
+# base/views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Secret
 from .serializers import SecretSerializer
-from datetime import timedelta
-from django.utils import timezone
-
+from .services.secret_service import SecretService
+from .exceptions.secret_exceptions import SecretNotFoundError, SecretExpiredError, SecretUnavailableError
 
 class SecretRetrieveView(APIView):
-
     def get(self, hash):
         try:
-            secret = Secret.objects.get(hash=hash)
-        except Secret.DoesNotExist:
-            return Response({'detail': 'Not Found'}, status=status.HTTP_404_NOT_FOUND)
-
-        if secret.remaining_views <= 0:
-            return Response({'detail': 'This secret is no longer available'}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = SecretSerializer(secret)
-        secret.remaining_views -= 1
-        secret.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            secret_data = SecretService.retrieve_secret(hash)
+            return Response(secret_data, status=status.HTTP_200_OK)
+        except SecretNotFoundError:
+            return Response({'detail': 'Secret not found.'}, status=status.HTTP_404_NOT_FOUND)
+        except SecretExpiredError:
+            return Response({'detail': 'Secret has expired.'}, status=status.HTTP_410_GONE)
+        except SecretUnavailableError:
+            return Response({'detail': 'Secret is no longer available.'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'detail': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class SecretCreateView(APIView):
-
     def post(self, request):
         serializer = SecretSerializer(data=request.data)
-
         if serializer.is_valid():
-            expire_after = serializer.validated_data.pop('expireAfter', 0)
-            expires_at = None
-
-            if expire_after > 0:
-                expires_at = timezone.now() + timedelta(minutes=expire_after)
-
-            secret = Secret.objects.create(expires_at=expires_at,
-                                           **serializer.validated_data)
-            return Response(SecretSerializer(secret).data, status=status.HTTP_201_CREATED)
-
+            secret_data = SecretService.create_secret(serializer.validated_data)
+            return Response(secret_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
