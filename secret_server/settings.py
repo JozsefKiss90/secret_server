@@ -18,7 +18,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*',]
 
 SECRET_KEY = config('DJANGO_SECRET_KEY', default='your_default_secret_key')
-DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
+#DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
 # Application definition
 
 INSTALLED_APPS = [
