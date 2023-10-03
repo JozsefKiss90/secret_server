@@ -90,7 +90,7 @@ DATABASES = {
 DATABASE_URL = config('DATABASE_URL', default=None)
 
 if DATABASE_URL:
-    db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
+    db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=False)
     DATABASES['default'].update(db_from_env)
 
 # Password validation
