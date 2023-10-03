@@ -12,14 +12,14 @@ class SecretService:
         try:
             secret = Secret.objects.get(hash=hash)
         except Secret.DoesNotExist:
-            raise SecretNotFoundError("The requested secret could not be found in the system.")
+            raise SecretNotFoundError()
 
         if secret.expires_at and secret.expires_at < timezone.now():
-            raise SecretExpiredError("The requested secret has surpassed its time-to-live and has expired.")
+            print("SecretExpiredError is about to be raised")  # for debugging purposes, use logging in production code
+            raise SecretExpiredError()
 
         if secret.remaining_views <= 0:
-            raise SecretUnavailableError(
-                "The requested secret has been viewed the maximum number of allowable times and is no longer available.")
+            raise SecretUnavailableError()
 
         secret.remaining_views -= 1
         secret.save()
@@ -29,12 +29,9 @@ class SecretService:
     @staticmethod
     def create_secret(validated_data: dict):
         expire_after = validated_data.pop('expireAfter', 0)
+        expire_after_views = validated_data.pop('expireAfterViews', 3)
         expires_at = None
         if expire_after > 0:
             expires_at = timezone.now() + timedelta(minutes=expire_after)
-
-        try:
-            secret = Secret.objects.create(expires_at=expires_at, **validated_data)
-            return SecretSerializer(secret).data
-        except SomeBusinessLogicError as e:  # Replace with actual exception you need to handle
-            raise InvalidSecretDataError(str(e))
+        secret = Secret.objects.create(expires_at=expires_at, remaining_views=expire_after_views, **validated_data)
+        return SecretSerializer(secret).data
