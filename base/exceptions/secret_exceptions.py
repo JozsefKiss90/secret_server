@@ -7,7 +7,7 @@ class BaseSecretError(Exception):
 
 class SecretNotFoundError(BaseSecretError):
     """Raised when a secret is not found."""
-    def __init__(self, message="The requested secret does not exist or has already been viewed."):
+    def __init__(self, message="The requested secret does not exist."):
         super().__init__(message)
 
 
@@ -16,15 +16,12 @@ class SecretUnavailableError(BaseSecretError):
     def __init__(self, message="The requested secret has reached its view limit and is no longer available."):
         super().__init__(message)
 
-class SecretExpiredError(Exception):
+class SecretExpiredError(BaseSecretError):
     def __init__(self, message="The requested secret has surpassed its time-to-live and has expired."):
         super().__init__(message)
 
 
 class InvalidSecretDataError(BaseSecretError):
     """Raised when the provided data for creating a secret is invalid."""
-    def __init__(self, detail=""):
-        message = "The provided data for creating a secret is invalid."
-        if detail:
-            message += f" Detail: {detail}"
+    def __init__(self, message="The provided data for creating a secret is invalid."):
         super().__init__(message)

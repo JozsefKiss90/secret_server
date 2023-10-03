@@ -9,19 +9,18 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SecretRetrieveView(APIView):
-    def get(self, request, hash):  # Include the 'request' parameter here
+    def get(self, request, hash):
         try:
             secret_data = SecretService.retrieve_secret(hash)
             return Response(secret_data, status=status.HTTP_200_OK)
-        except SecretNotFoundError as e:
-            return Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
-        except SecretExpiredError:
-            print("Caught SecretExpiredError, returning 410 GONE")
-            return Response({'detail': 'Secret has expired.'}, status=status.HTTP_410_GONE)
-        except SecretUnavailableError as e:
-            return Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
         except InvalidSecretDataError as e:
             return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except SecretNotFoundError as e:
+            return Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
+        except SecretExpiredError as e:
+            return Response({'detail': str(e)}, status=status.HTTP_410_GONE)
+        except SecretUnavailableError as e:
+            return Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             logger.error(e, exc_info=True)
             return Response({'detail': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

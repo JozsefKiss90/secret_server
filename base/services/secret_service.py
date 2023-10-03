@@ -4,22 +4,23 @@ from django.utils import timezone
 from ..models import Secret
 from ..serializers import SecretSerializer
 from ..exceptions.secret_exceptions import SecretNotFoundError, SecretExpiredError, SecretUnavailableError, InvalidSecretDataError
-
-
+from .hash_validator import is_valid_uuid
 class SecretService:
+
     @staticmethod
     def retrieve_secret(hash: str):
+        if not is_valid_uuid(hash):
+            raise InvalidSecretDataError()
         try:
             secret = Secret.objects.get(hash=hash)
         except Secret.DoesNotExist:
             raise SecretNotFoundError()
-
         if secret.expires_at and secret.expires_at < timezone.now():
-            print("SecretExpiredError is about to be raised")  # for debugging purposes, use logging in production code
             raise SecretExpiredError()
 
         if secret.remaining_views <= 0:
             raise SecretUnavailableError()
+
 
         secret.remaining_views -= 1
         secret.save()
@@ -35,3 +36,4 @@ class SecretService:
             expires_at = timezone.now() + timedelta(minutes=expire_after)
         secret = Secret.objects.create(expires_at=expires_at, remaining_views=expire_after_views, **validated_data)
         return SecretSerializer(secret).data
+
