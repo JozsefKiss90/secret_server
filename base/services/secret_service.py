@@ -21,7 +21,6 @@ class SecretService:
         if secret.remaining_views <= 0:
             raise SecretUnavailableError()
 
-
         secret.remaining_views -= 1
         secret.save()
 

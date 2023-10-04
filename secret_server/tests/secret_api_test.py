@@ -47,7 +47,7 @@ class SecretAPITest(APITestCase):
         url = reverse('retrieve_secret', args=[non_existent_uuid])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(response.data['detail'], 'The requested secret does not exist or has already been viewed.')
+        self.assertEqual(response.data['detail'], 'The requested secret does not exist.')
 
     def test_secret_unavailable(self):
         self.secret.remaining_views = 1  # Setting the remaining views to 1
