@@ -12,10 +12,10 @@ amount of time.
 
 ## 💾 Setup
 ### Backend
-'''
+```
   cd frontend/
   npm install
-'''
+```
 ## 🚀 Usage
 ### Backend
 The server is hosted at https://secret-server-api-a8ae5f120a2a.herokuapp.com
