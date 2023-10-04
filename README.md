@@ -1,7 +1,6 @@
 ---
 # Secret Server 
-Secret Server implementation for Allmyles Full Stack Developer homework. By using the frontend application or the server api you can store and retrieve secrets strings in a hashed format. Secrets may have an expiration and can be retrieved only for a limited
-amount of time. 
+Secret Server implementation for Allmyles Full Stack Developer homework. By using the frontend application or the server api you can store and retrieve secret strings in a hashed format. Secrets may have an expiration and can be retrieved only for a limited amount of time. 
 
 ## 🔨 Built with
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
