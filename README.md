@@ -9,6 +9,7 @@ amount of time.
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
 ## 🚀 Usage
+### Backend
 The server is hosted at https://secret-server-api-a8ae5f120a2a.herokuapp.com
 You can send secrets through https://secret-server-api-a8ae5f120a2a.herokuapp.com/api/secret/ with 'application/x-www-form-urlencoded' encoding.
 When sending a secret, ensure your POST request uses the `application/x-www-form-urlencoded` content type. Below are the parameters that you should include in the request body:
