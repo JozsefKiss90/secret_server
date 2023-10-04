@@ -10,6 +10,7 @@ Secret Server implementation for Allmyles Full Stack Developer homework. By usin
 ![Material UI](https://img.shields.io/badge/Material--UI-0081CB?style=for-the-badge&logo=material-ui&logoColor=white)
 ![Heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)
 ## 💾 Setup
+Clone the repository, then run:
 ### Backend
 ```
 cd backend/
