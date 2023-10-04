@@ -19,5 +19,6 @@ Structure your POST request body similar to this:
     "createdAt": "2023-10-04T10:41:15.217850+00:00",
     "expiresAt": "2023-10-04T11:41:15.217850+00:00"
 }
+```
 
 You can retrive the secrets through https://secret-server-api-a8ae5f120a2a.herokuapp.com/api/secret/{hash} .
