@@ -11,14 +11,12 @@ amount of time.
 ## 🚀 Usage
 The server is hosted at https://secret-server-api-a8ae5f120a2a.herokuapp.com
 You can send secrets through https://secret-server-api-a8ae5f120a2a.herokuapp.com/api/secret/ with 'application/x-www-form-urlencoded' encoding.
-Structure your POST request body similar to this:
-```json
-{
-    "hash": "2fcd0441-6a39-4ee0-8f35-fb2b8f964a1c",
-    "secret_text": "YourSecretHere",
-    "createdAt": "2023-10-04T10:41:15.217850+00:00",
-    "expiresAt": "2023-10-04T11:41:15.217850+00:00"
-}
-```
+When sending a secret, ensure your POST request uses the `application/x-www-form-urlencoded` content type. Below are the parameters that you should include in the request body:
+
+| Key               | Value Description                               | Type    | Requirement  |
+|-------------------|-------------------------------------------------|---------|--------------|
+| `secret_text`     | The secret message you want to share.           | String  | Required     |
+| `expireAfterViews`| The number of views after which the secret should expire. | Integer | Optional     |
+| `expireAfter`     | The time (in minutes) after which the secret should expire. | Integer | Optional     |
 
 You can retrive the secrets through https://secret-server-api-a8ae5f120a2a.herokuapp.com/api/secret/{hash} .
