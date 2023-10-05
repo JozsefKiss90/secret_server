@@ -27,7 +27,7 @@ pip install -r requirements.txt
 ### Backend
 The server is hosted at https://secret-server-api-a8ae5f120a2a.herokuapp.com
 You can send secrets with Postman through https://secret-server-api-a8ae5f120a2a.herokuapp.com/api/secret/ with 'application/x-www-form-urlencoded' encoding.
-When sending a secret, ensure your POST request uses the `application/x-www-form-urlencoded` content type. Below are the parameters that you should include in the request body:
+When sending a secret, ensure your POST request body uses the `application/x-www-form-urlencoded` content type. Below are the parameters that you should include in the request body:
 
 | Key               | Value Description                               | Type    | Requirement  |
 |-------------------|-------------------------------------------------|---------|--------------|
